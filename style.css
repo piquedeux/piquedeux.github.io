@@ -1,228 +1,326 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BLUSH – Kevin Abstract</title>
 
-body, html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  background: linear-gradient(to top left, #001a33, #004080);
-  font-family: 'Roboto', sans-serif;
-  overflow: hidden;
-}
+  <!-- Google Font: Roboto (Black, Bold, Regular) -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet" />
 
+  <!-- Meta Description and SEO -->
+  <meta name="description" content="BLUSH by Kevin Abstract – Texas Pop for the summer. Explore music, visuals, and more." />
+  <link rel="icon" href="Favicon.jpg" type="image/jpeg" />
 
-.background-overlay {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at center, rgba(255,255,255,0.05), transparent 70%);
-  z-index: 0;
-}
+  <!-- Open Graph for social -->
+  <meta property="og:title" content="BLUSH by Kevin Abstract" />
+  <meta property="og:description" content="Texas Pop for the summer. Dive into the sonic and visual world of Kevin Abstract." />
+  <meta property="og:image" content="FAA91DFD-A3F8-4EE0-9A40-B3E161E4EC37.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://yourdomain.com" />
 
-.word {
-  position: absolute;
-  font-size: 1.5em;
-  color: white;
-  text-shadow: 0 30px 0 rgba(255, 255, 255, 0.2);
-  transform: rotateX(15deg) rotateY(-20deg);
-  transition: transform 0.4s ease;
-  cursor: pointer;
-  z-index: 1;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 700;
-}
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="BLUSH by Kevin Abstract" />
+  <meta name="twitter:description" content="Texas Pop for the summer." />
+  <meta name="twitter:image" content="FAA91DFD-A3F8-4EE0-9A40-B3E161E4EC37.png" />
 
-.word:hover {
-  transform: scale(1.2) rotateX(10deg) rotateY(-15deg);
-}
+  <!-- Styles -->
+  <style>
+    :root {
+      --blue: #3D8BF2;
+      --red: #FF0000;
+    }
 
-.web {
-  top: 18%;
-  left: 5vw;
-  transform: perspective(600px) rotateY(35deg) rotateX(10deg) scale(1.1);
-}
-.creative {
-  top: 32%;
-  right: 5vw;
-  left: auto;
-  transform: perspective(600px) rotateY(-35deg) rotateX(10deg) scale(1.1);
-  text-align: right;
-}
-.objects {
-  top: 48%;
-  left: 10vw;
-  transform: perspective(600px) rotateY(25deg) rotateX(10deg) scale(1.1);
-}
-.concepts {
-  top: 62%;
-  right: 10vw;
-  left: auto;
-  transform: perspective(600px) rotateY(-25deg) rotateX(10deg) scale(1.1);
-  text-align: right;
-}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-.corner {
-  position: absolute;
-  font-size: 2em;
-  color: rgba(255,255,255,0.95);
-  z-index: 2;
-  letter-spacing: -0.05em;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 700;
-  pointer-events: none;
-  box-sizing: border-box;
-  padding: 1em 1em;
-  line-height: 1.1;
-    pointer-events: auto;
-  transition: transform 0.5s cubic-bezier(.4,2,.6,1);
-  cursor: pointer;
-  user-select: none;
-  text-decoration: none;
-  overflow: hidden;
-  max-width: 90vw;
-}
+    body, html {
+      background: var(--red);
+      font-family: 'Roboto', sans-serif;
+      color: white;
+      overflow-x: hidden;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
 
-.bottom-left {
-  bottom: 3vh;
-  left: 2vw;
-  right: auto;
-  width: 48vw;
-  text-align: left;
-  transform: perspective(800px) rotateY(25deg) rotateX(10deg) scale(1.2) skewY(-3deg);
-  text-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 1px 0 #fff;
-  border-radius: 0 0 80vw 80vw/0 0 100vw 100vw;
-}
+    /* Text variants */
+    .font-black {
+      font-weight: 900; /* Roboto Black */
+    }
 
-.bottom-left:hover {
-  transform: perspective(800px) rotateY(15deg) rotateX(5deg) rotateZ(-1deg);
-}
+    .font-bold {
+      font-weight: 700; /* Roboto Bold */
+    }
 
+    .font-regular {
+      font-weight: 400; /* Roboto Regular */
+    }
 
-.bottom-right {
-  bottom: 3vh;
-  right: 2vw;
-  left: auto;
-  width: 48vw;
-  text-align: right;
-  transform: perspective(800px) rotateY(-25deg) rotateX(10deg) scale(1.2) skewY(3deg);
-  text-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 1px 0 #fff;
-  border-radius: 0 0 80vw 80vw/0 0 100vw 100vw;
-}
+    h1, h2, h3 {
+      color: var(--blue);
+      letter-spacing: 0.05em;
+      text-align: center;
+      font-weight: 700; /* Bold */
+      margin-bottom: 0.5em;
+    }
 
-.bottom-right:hover {
-  transform: perspective(800px) rotateY(-15deg) rotateX(5deg) rotateZ(1deg);
-}
+    p {
+      text-align: center;
+      letter-spacing: 0.03em;
+      margin: 1em;
+      font-size: 1.2rem;
+      font-weight: 400;
+    }
 
-.arrows {
-  position: absolute;
-  top: 45%;
-  left: 48%;
-  z-index: 2;
-}
+    /* Loader */
+    .loader {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: var(--red);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      animation: fadeOut 3.5s ease-out 4s forwards;
+    }
 
-.arrow {
-  width: 20px;
-  height: 20px;
-  border-left: 3px solid white;
-  border-bottom: 3px solid white;
-  transform: rotate(-45deg);
-  margin: 8px auto;
-  animation: arrowBounce 1.2s infinite ease-in-out;
-}
+    .loader-image {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      animation: flicker 4s steps(1, end) infinite;
+      z-index: 0;
+    }
 
-.arrow.delay {
-  animation-delay: 0.6s;
-}
+    .loader-text {
+      z-index: 10;
+      font-size: 5rem;
+      color: var(--blue);
+      font-weight: 900; /* Roboto Black */
+      letter-spacing: 0.15em;
+      animation: pulse 3.5s ease-in-out infinite;
+      user-select: none;
+    }
 
-@keyframes arrowBounce {
-  0%, 100% { transform: translateY(0) rotate(-45deg); opacity: 0.3; }
-  50% { transform: translateY(10px) rotate(-45deg); opacity: 1; }
-}
+    .loader-sub {
+      font-size: 1.8rem;
+      color: white;
+      z-index: 10;
+      font-weight: 700; /* Bold */
+      letter-spacing: 0.1em;
+      animation: pulse 3.5s ease-in-out infinite;
+      user-select: none;
+      margin-top: 0.2em;
+    }
 
-.silhouette {
-  position: absolute;
-  filter: blur(1.5px) drop-shadow(0 0 12px #003366);
-}
+    @keyframes flicker {
+      0% { background-image: url('https://pbs.twimg.com/media/Gr-0nQBWUAAWk6a.jpg'); }
+      33% { background-image: url('https://pbs.twimg.com/media/Gr1IdIFXIAEj8oI.jpg'); }
+      66% { background-image: url('https://pbs.twimg.com/media/Gq9UWSQWcAATCoW.jpg'); }
+      100% { background-image: url('https://pbs.twimg.com/media/Gr-0nQBWUAAWk6a.jpg'); }
+    }
 
-.person1 {
-  top: 38%; left: 12%; width: 80px;
-  fill: #101c21;
-}
-.person2 {
-  top: 60%; left: 70%; width: 70px;
-  fill: #5c2a3d;
-}
+    @keyframes fadeOut {
+      to { opacity: 0; visibility: hidden; }
+    }
 
-.shooting-stars {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-}
-.shooting-star {
-  position: absolute;
-  width: 56px; /* bigger */
-  height: 56px;
-  opacity: 0.13; /* lower opacity */
-  filter: brightness(0) invert(1) drop-shadow(0 0 40px #7abaff) drop-shadow(0 0 24px #fff) blur(1px);
-  animation: shootingStar 3.5s linear infinite;
-  pointer-events: none;
-  transition: opacity 0.3s;
-}
-.shooting-star.star1 { top: 10%; left: 5%; animation-delay: 0s; }
-.shooting-star.star2 { top: 30%; left: 80%; animation-delay: 1.2s; }
-.shooting-star.star3 { top: 60%; left: 20%; animation-delay: 2.1s; }
-.shooting-star.star4 { top: 80%; left: 60%; animation-delay: 0.7s; }
-@keyframes shootingStar {
-  0%   { opacity: 0;   transform: translate(0,0) rotate(-45deg) scale(0.7);}
-  10%  { opacity: 0.13;}
-  30%  { opacity: 0.22;}
-  70%  { opacity: 0.22;}
-  90%  { opacity: 0.13;}
-  100% { opacity: 0;   transform: translate(180px, 80px) rotate(-45deg) scale(1.2);}
-}
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
 
+    /* Header */
+    .header {
+      font-size: 5rem;
+      position: fixed;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1000;
+      color: var(--blue);
+      font-weight: 900; /* Roboto Black */
+      letter-spacing: 0.15em;
+      transition: all 1s ease 4s;
+      user-select: none;
+    }
 
-@media (min-width: 700px) {
+    body.loaded .header {
+      top: 1rem;
+      left: 1rem;
+      font-size: 2rem;
+      transform: none;
+      letter-spacing: 0.1em;
+    }
 
-  .word {
-    font-size: 2em;
-  }
-  .corner {
-    font-size: 3em;
-    padding: 2em 3.2em;
-  }
-  .web {
-    top: 18%;
-    left: 8vw;
-    transform: perspective(1200px) rotateY(40deg) rotateX(10deg) scale(1.7);
-  }
-  .creative {
-    top: 26%;
-    right: 8vw;
-    left: auto;
-    transform: perspective(1200px) rotateY(-40deg) rotateX(10deg) scale(1.7);
-  }
-  .objects {
-    top: 48%;
-    left: 14vw;
-    transform: perspective(1200px) rotateY(30deg) rotateX(10deg) scale(1.7);
-  }
-  .concepts {
-    top: 54%;
-    right: 14vw;
-    left: auto;
-    transform: perspective(1200px) rotateY(-30deg) rotateX(10deg) scale(1.7);
-  }
-  .bottom-left {
-    bottom: 5vh;
-    left: 3vw;
-    width: 40vw;
-    transform: perspective(1200px) rotateY(50deg) rotateX(18deg) scale(2.2) skewY(-8deg);
-  }
-  .bottom-right {
-    bottom: 5vh;
-    right: 3vw;
-    width: 40vw;
-    transform: perspective(1200px) rotateY(-50deg) rotateX(18deg) scale(2.2) skewY(8deg);
-  }
-}
+    /* Main content */
+    .main {
+      padding-top: 6rem;
+      opacity: 0;
+      animation: fadeIn 1s ease-in 4.2s forwards;
+      text-align: center;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    .gallery img {
+      width: 90%;
+      max-width: 400px;
+      margin: 1em auto;
+      display: block;
+      transition: transform 0.4s;
+      cursor: pointer;
+    }
+
+    .gallery img:hover {
+      transform: perspective(600px) rotateY(10deg) scale(1.05);
+    }
+
+    /* Menu Toggle (bear) */
+    .menu-toggle {
+      position: fixed;
+      bottom: 1em;
+      left: 50%;
+      transform: translateX(-50%);
+      cursor: pointer;
+      z-index: 10001;
+      user-select: none;
+    }
+
+    .menu-toggle img {
+      width: 50px;
+      filter: brightness(0) invert(1) drop-shadow(0 0 40px #7abaff);
+      animation: wander 5s infinite alternate ease-in-out, hop 1.5s infinite ease-in-out;
+      transition: filter 0.3s ease;
+    }
+
+    .menu-toggle.open::after {
+      content: '★';
+      color: var(--red);
+      position: absolute;
+      top: 0;
+      left: 0;
+      font-size: 2rem;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    @keyframes wander {
+      0% { transform: translateX(-50%) translateY(0); }
+      100% { transform: translateX(-40%) translateY(0); }
+    }
+
+    @keyframes hop {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+      position: fixed;
+      bottom: -100%;
+      left: 0;
+      width: 100%;
+      background: url('https://pbs.twimg.com/media/GrMH-nKWoAEpSzA.jpg') center/cover no-repeat;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2em;
+      transition: bottom 0.4s ease-in-out;
+      z-index: 9998;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .mobile-menu.open {
+      bottom: 0;
+    }
+
+    .mobile-menu a {
+      font-size: 1.4rem;
+      margin: 1em 0;
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      user-select: none;
+      transition: color 0.3s;
+    }
+
+    .mobile-menu a:hover {
+      color: var(--blue);
+    }
+
+    @media(min-width: 800px) {
+      .menu-toggle img {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+      }
+
+      .menu-toggle.open::after {
+        font-size: 3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Loader -->
+  <div class="loader">
+    <div class="loader-text font-black">blush</div>
+    <div class="loader-sub font-bold">JUNE 2025</div>
+    <div class="loader-image"></div>
+  </div>
+
+  <!-- Header -->
+  <div class="header font-black">blush</div>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="menu">
+    <a href="#" class="font-bold">Home</a>
+    <a href="#" class="font-bold">Tour</a>
+    <a href="#" class="font-bold">Music</a>
+    <a href="#" class="font-bold">Contact</a>
+  </div>
+
+  <!-- Menu Toggle -->
+  <div class="menu-toggle" onclick="toggleMenu()" id="toggle">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Bear_of_California_%28black%29.svg" alt="menu bear" />
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <h2>KEVIN ABSTRACT</h2>
+    <h3>SUMMER</h3>
+    <p>Genre: TEXAS POP</p>
+    <div class="gallery">
+      <img src="https://pbs.twimg.com/media/Gr0zk2QXkAAWsws.jpg" alt="Promo 1" />
+      <img src="https://pbs.twimg.com/media/GrMH-nKWoAEpSzA.jpg" alt="Promo 2" />
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    window.addEventListener('load', () => {
+      document.body.classList.add('loaded');
+    });
+
+    function toggleMenu() {
+      document.getElementById('menu').classList.toggle('open');
+      document.getElementById('toggle').classList.toggle('open');
+    }
+  </script>
+
+</body>
+</html>
