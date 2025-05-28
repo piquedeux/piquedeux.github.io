@@ -120,12 +120,10 @@ body, html {
 }
 
 .arrow {
-  width: 20px;
-  height: 20px;
-  border-left: 3px solid white;
-  border-bottom: 3px solid white;
-  transform: rotate(-45deg);
-  margin: 8px auto;
+  color: white;
+  opacity: 0.13; /* lower opacity */
+  filter: brightness(0) invert(1) drop-shadow(0 0 40px #7abaff) drop-shadow(0 0 24px #fff) blur(1px);
+font-size: 2em;
   animation: arrowBounce 1.2s infinite ease-in-out;
 }
 
@@ -140,7 +138,7 @@ body, html {
 
 .silhouette {
   position: absolute;
-  filter: blur(1.5px) drop-shadow(0 0 12px #003366);
+  filter: blur(1.5px) drop-shadow(4px 4px 22px #003366);
 }
 
 .person1 {
