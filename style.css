@@ -9,6 +9,13 @@ body, html {
   overflow: hidden;
 }
 
+.a {
+  text-decoration: none;
+  }
+  
+  .a:hover {
+  text-decoration: underline;
+}
 
 .background-overlay {
   position: absolute;
