@@ -1,57 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>mori77z dropbox</title>
+  <title>Letztes Bild aus Dropbox</title>
   <style>
-    body { font-family: inter, sans-serif; text-align: left; margin: 40px; }
-    img { max-width: 90%; margin-top: 20px; }
-    .info { margin-top: 10px; color: black; }
+    body { font-family: sans-serif; text-align: center; margin: 40px; }
+    img { max-width: 90%; margin-top: 20px; border-radius: 8px; }
+    .info { margin-top: 10px; color: #444; font-size: 0.9em; }
   </style>
 </head>
 <body>
-  <h1>mori77z</h1>
-  <div id="content">Loading…</div>
+  <h1>Letztes Bild</h1>
+  <div id="content">Lädt…</div>
 
   <script>
-    const ACCESS_TOKEN = "sl.u.AF86jxZ_zIMIUiOFg_0UCeVzAE8nl17x_27O8IBY4DSSEdWcBd9hLnyjcH42K2GFf4E8qkqmjDdcUCYpYXERVUHOVhfytBa_t4_TtUmlLP1dX0MXlS9qY09C-ubDz1JTP1u9SLfnhFEOw75qxiUhtSBg70c368C1ldN1WbuUynEYRHZHgjsOKInex2ZAErtq1L0ENiHwOD7K6GXu7glRIRclJVN4tJZ-hBRmDSxW4J6fP_UWsuh31fzzHXw_HiI9VRRsBURMI_i0zC7XNoUwPzOqqDVEkL8ocGh_frphT2UwqpLza9kKhxYIdKh9qfNjjOw_Tt1Br6YI8A1WvVyHy3X25mIOhpVZS0Ce5dRdTGqQd5CyUv379ADy_At7NorGeh_Iy30bBQFhrswbSKg3Y_gGYGJT-xbVHleyvEYzpBJmLbOuUXfNTiXOGjBcBt93qFip_s0OnWld1aBg6u07WDqhXVLR_zSLI9WWY5VcogWsjxy9rSXAxGGgg3rQ9QVFt1D-ew4c_1Q9N4mWu1AIoUdt-DISXB7va_nRsIostZpOMg7DfIfotteHjV2Lwy4siult4o40y75AtfzUi6CXi_4f2dDrQA-S4yq81qOr_pGNwT25BJlM2-XVPQt_VeorsftAYSrIqJ9oBdUZaDzarrC7PED2MAAg11xx-TOfzppdRvpHNQrHHqPCpHtmkj9WV9xmh7FEaQahGv0ma4OMlECYT21lPPAp-3-KTX1QVCsAaGnpzJ7n_Zq2HGtVHlNFBus7u2L8_Dz5UyTt_GWAckvh-rpc5UJ04ODZeGYXMhqRIMKTvALRH3CQRxZbsp5dRgtr9ZiUSTVcxrqdDrT7YqQXE8YXmujVwBmFd4sueEGbpy95w_P7kd8B0KwiAnTF18Y9ceTbGOiUDaiGurEz4YtyJ5B9e7NBox3wvRLC1smUSSqaWHzLKpkDlC06QBGN_0kGm2UVfc8kyjhM_aJYF_ZwNivxnmQ92zBZ3m5gvBI3vDyefh-GdKsq9MG0OPTWVNe89CkwsyyfMescbWfEQfLbKgdYjdKnjxsw_TnFuPql4RhrrNnvcc-oFCUvMjkyfpAs8GYuqx5_xF-J7VARQN2_NXp1LyxCpMh8xmGvV0fv8Dnu1wOXfTXk11EJ8YhBhKC-xhJOSwwGzeoP2FzlFjC9tFV4sqkLT2FMKzoG2XNZGKfPCthlXkAYGQdQ8vidToPONq-DCN8TDOj4yPw_rwh4BK2V4fUhtIC0lmgu7RYpQY6KTWlz_TthmnGP4wcF4KVWmCgZAPEwDHNeRJ4OLNXeRxmgZTM_2wj7o_soHUIMehfQRec3LqFWjWBEd7ll_2N_1oHmFhZwjOdcSKegF0qvsS8JnQ61zOKPdbKNb0X6kCywoLeX-SKi9nmKh-7UVww8aj2fIA950FW8bFEbH8L0yzUEdDRI8zf0BFVD_2cHwg";
-    const FOLDER_PATH = "/mori77z";
+    const SHARED_FOLDER_URL = "https://www.dropbox.com/scl/fo/icpkdzmyrbwonrlupe0gg/AK2z1VISUqQea4V6VbWyAEc?rlkey=csk78456eeragqd8nxdlyi0xa&st=nqv5jodj&dl=0";
 
     async function loadLatest() {
-      const res = await fetch("https://api.dropboxapi.com/2/files/list_folder", {
-        method: "POST",
-        headers: {
-          "Authorization": "Bearer " + ACCESS_TOKEN,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ path: FOLDER_PATH })
-      });
+      try {
+        // 1. HTML vom geteilten Ordner laden
+        const res = await fetch(SHARED_FOLDER_URL);
+        const text = await res.text();
 
-      const data = await res.json();
-      if (!data.entries) {
-        document.getElementById("content").innerText = "Keine Bilder gefunden";
-        return;
-      }
+        // 2. Alle Bild-Links finden (.jpg, .png, .jpeg, .gif)
+        const regex = /https:\/\/www\.dropbox\.com\/s\/[^"]+\.(jpg|jpeg|png|gif)\?dl=0/g;
+        const matches = text.match(regex);
 
-      const images = data.entries.filter(f => f[".tag"] === "file");
-      images.sort((a, b) => new Date(b.server_modified) - new Date(a.server_modified));
-      const latest = images[0];
-
-      const downloadRes = await fetch("https://content.dropboxapi.com/2/files/download", {
-        method: "POST",
-        headers: {
-          "Authorization": "Bearer " + ACCESS_TOKEN,
-          "Dropbox-API-Arg": JSON.stringify({ path: latest.path_lower })
+        if (!matches || matches.length === 0) {
+          document.getElementById("content").innerText = "Keine Bilder gefunden.";
+          return;
         }
-      });
 
-      const blob = await downloadRes.blob();
-      const imgUrl = URL.createObjectURL(blob);
+        // 3. In RAW-Links umwandeln
+        const rawLinks = matches.map(link => link.replace("?dl=0", "?raw=1"));
 
-      document.getElementById("content").innerHTML = `
-        <img src="${imgUrl}" alt="">
-        <div class="info">${latest.name} – ${new Date(latest.server_modified).toLocaleString()}</div>
-      `;
+        // 4. Sortierung nach Zahl im Dateinamen
+        rawLinks.sort((a, b) => {
+          const numA = parseInt(a.match(/(\d+)(?=\.\w+\?raw=1)/)?.[0] || "0", 10);
+          const numB = parseInt(b.match(/(\d+)(?=\.\w+\?raw=1)/)?.[0] || "0", 10);
+          return numA - numB; // klein -> groß
+        });
+
+        // 5. Letztes (höchste Zahl = neuestes)
+        const latest = rawLinks[rawLinks.length - 1];
+        const filename = latest.split("/").pop().split("?")[0];
+
+        // 6. Anzeige
+        document.getElementById("content").innerHTML = `
+          <img src="${latest}" alt="">
+          <div class="info">${filename}</div>
+        `;
+      } catch (e) {
+        document.getElementById("content").innerText = "Fehler beim Laden: " + e;
+      }
     }
 
     loadLatest();
