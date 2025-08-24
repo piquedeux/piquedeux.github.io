@@ -14,15 +14,16 @@
   <div id="content">Lädt…</div>
 
   <script>
-    const SHARED_FOLDER_URL = "https://www.dropbox.com/scl/fo/icpkdzmyrbwonrlupe0gg/AK2z1VISUqQea4V6VbWyAEc?rlkey=csk78456eeragqd8nxdlyi0xa&st=nqv5jodj&dl=0";
+    // Dein öffentlicher Dropbox-Ordner-Link (sollte auf /s/ beginnen)
+    const SHARED_FOLDER_URL = "https://www.dropbox.com/scl/fo/icpkdzmyrbwonrlupe0gg/mori77z?rlkey=57j0gxwyhajqe4ipc0gmkzcd2&dl=0";
 
     async function loadLatest() {
       try {
-        // 1. HTML vom geteilten Ordner laden
+        // 1. HTML vom Freigabe-Link laden
         const res = await fetch(SHARED_FOLDER_URL);
         const text = await res.text();
 
-        // 2. Alle Bild-Links finden (.jpg, .png, .jpeg, .gif)
+        // 2. Alle Bild-Links finden (jpg, jpeg, png, gif)
         const regex = /https:\/\/www\.dropbox\.com\/s\/[^"]+\.(jpg|jpeg|png|gif)\?dl=0/g;
         const matches = text.match(regex);
 
@@ -31,21 +32,20 @@
           return;
         }
 
-        // 3. In RAW-Links umwandeln
+        // 3. In RAW-Links umwandeln (?raw=1)
         const rawLinks = matches.map(link => link.replace("?dl=0", "?raw=1"));
 
-        // 4. Sortierung nach Zahl im Dateinamen
+        // 4. Nach Zahl im Dateinamen sortieren (höchste Zahl = neuestes Bild)
         rawLinks.sort((a, b) => {
           const numA = parseInt(a.match(/(\d+)(?=\.\w+\?raw=1)/)?.[0] || "0", 10);
           const numB = parseInt(b.match(/(\d+)(?=\.\w+\?raw=1)/)?.[0] || "0", 10);
-          return numA - numB; // klein -> groß
+          return numA - numB; // klein → groß
         });
 
-        // 5. Letztes (höchste Zahl = neuestes)
         const latest = rawLinks[rawLinks.length - 1];
         const filename = latest.split("/").pop().split("?")[0];
 
-        // 6. Anzeige
+        // 5. Anzeige
         document.getElementById("content").innerHTML = `
           <img src="${latest}" alt="">
           <div class="info">${filename}</div>
