@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Moritz' Landing</title>
+  <link rel="stylesheet" href="aqua.css">
+</head>
+<body>
+<div class="main">
+    <div class="background-overlay"></div>
+    
+    <a class="word web" href="https://moritzgauss.com/">web</a>
+    <a class="word creative" href="https://moritzgauss.com/creative">creative</a>
+    <a class="word objects" href="https://moritzgauss.com/objects">objects</a>
+    <a class="word concepts" href="https://moritzgauss.com/concepts">concepts</a>
+    
+    <div class="arrows">
+      <div class="arrow">⟁</div>
+      <div class="arrow delay">▽</div>
+    </div>
+    
+    <a class="corner bottom-left" href="https://moritzgauss.com/about">moritz gauss</a>
+    <a class="corner bottom-right" href="https://moritzgauss.com/studio">studio</a>
+
+    <div class="silhouettes">
+      <!-- SVG Silhouettes: recolored and replaced with external SVGs -->
+      <img class="silhouette person1" src="https://upload.wikimedia.org/wikipedia/commons/8/83/SVG_Human_Silhouette.svg" style="filter: drop-shadow(0 0 12px #6ec1e4) blur(1.5px) opacity(0.18);" alt="Human silhouette" />
+      <img class="silhouette person2" src="https://upload.wikimedia.org/wikipedia/commons/8/8d/Woman_Silhouette.svg" style="filter: drop-shadow(0 0 12px #e46e9b) blur(1.5px) opacity(0.18);" alt="Woman silhouette" />
+    </div>
+
+    <div class="shooting-stars">
+      <div class="shooting-star star1" alt="Curved Arrow">⚛</div>
+            <div class="shooting-star star1" alt="Curved Arrow">✎</div>
+      <div class="shooting-star star2 alt="Curved Arrow">✍</div>
+            <div class="shooting-star star2 alt="Curved Arrow">☎</div>
+      <div class="shooting-star star3" alt="Curved Arrow">☠</div>
+            <div class="shooting-star star3" alt="Curved Arrow">✉</div>
+      <div class="shooting-star star4" alt="Curved Arrow">♬</div>
+            <div class="shooting-star star4" alt="Curved Arrow">✆</div>
+    </div>
+  </div>
+
+  <button id="style-switcher" style="position:fixed;top:1em;right:1em;z-index:1000;font-size:1em;color:#888;opacity:0.5;">
+    Change Style: Aqua / Vapor
+  </button>
+
+  <script>
+    const styleSwitcher = document.getElementById('style-switcher');
+    let isAquaStyle = true;
+
+    styleSwitcher.addEventListener('click', () => {
+      if (isAquaStyle) {
+        document.querySelector('link[rel="stylesheet"]').setAttribute('href', 'style.css');
+        styleSwitcher.textContent = 'Change Style: Vapor / Aqua';
+      } else {
+        document.querySelector('link[rel="stylesheet"]').setAttribute('href', 'aqua.css');
+        styleSwitcher.textContent = 'Change Style: Aqua / Vapor';
+      }
+      isAquaStyle = !isAquaStyle;
+    });
+  </script>
+</body>
+</html>
