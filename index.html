@@ -1,64 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Moritz' Landing</title>
-  <link rel="stylesheet" href="aqua.css">
+  <meta charset="UTF-8">
+  <title>mori77z dropbox</title>
+  <style>
+    body { font-family: inter, sans-serif; text-align: left; margin: 40px; }
+    img { max-width: 90%; margin-top: 20px; }
+    .info { margin-top: 10px; color: black; }
+  </style>
 </head>
 <body>
-<div class="main">
-    <div class="background-overlay"></div>
-    
-    <a class="word web" href="https://moritzgauss.com/">web</a>
-    <a class="word creative" href="https://moritzgauss.com/creative">creative</a>
-    <a class="word objects" href="https://moritzgauss.com/objects">objects</a>
-    <a class="word concepts" href="https://moritzgauss.com/concepts">concepts</a>
-    
-    <div class="arrows">
-      <div class="arrow">⟁</div>
-      <div class="arrow delay">▽</div>
-    </div>
-    
-    <a class="corner bottom-left" href="https://moritzgauss.com/about">moritz gauss</a>
-    <a class="corner bottom-right" href="https://moritzgauss.com/studio">studio</a>
-
-    <div class="silhouettes">
-      <!-- SVG Silhouettes: recolored and replaced with external SVGs -->
-      <img class="silhouette person1" src="https://upload.wikimedia.org/wikipedia/commons/8/83/SVG_Human_Silhouette.svg" style="filter: drop-shadow(0 0 12px #6ec1e4) blur(1.5px) opacity(0.18);" alt="Human silhouette" />
-      <img class="silhouette person2" src="https://upload.wikimedia.org/wikipedia/commons/8/8d/Woman_Silhouette.svg" style="filter: drop-shadow(0 0 12px #e46e9b) blur(1.5px) opacity(0.18);" alt="Woman silhouette" />
-    </div>
-
-    <div class="shooting-stars">
-      <div class="shooting-star star1" alt="Curved Arrow">⚛</div>
-            <div class="shooting-star star1" alt="Curved Arrow">✎</div>
-      <div class="shooting-star star2 alt="Curved Arrow">✍</div>
-            <div class="shooting-star star2 alt="Curved Arrow">☎</div>
-      <div class="shooting-star star3" alt="Curved Arrow">☠</div>
-            <div class="shooting-star star3" alt="Curved Arrow">✉</div>
-      <div class="shooting-star star4" alt="Curved Arrow">♬</div>
-            <div class="shooting-star star4" alt="Curved Arrow">✆</div>
-    </div>
-  </div>
-
-  <button id="style-switcher" style="position:fixed;top:1em;right:1em;z-index:1000;font-size:1em;color:#888;opacity:0.5;">
-    Change Style: Aqua / Vapor
-  </button>
+  <h1>mori77z</h1>
+  <div id="content">Loading…</div>
 
   <script>
-    const styleSwitcher = document.getElementById('style-switcher');
-    let isAquaStyle = true;
+    const ACCESS_TOKEN = "sl.u.AF86jxZ_zIMIUiOFg_0UCeVzAE8nl17x_27O8IBY4DSSEdWcBd9hLnyjcH42K2GFf4E8qkqmjDdcUCYpYXERVUHOVhfytBa_t4_TtUmlLP1dX0MXlS9qY09C-ubDz1JTP1u9SLfnhFEOw75qxiUhtSBg70c368C1ldN1WbuUynEYRHZHgjsOKInex2ZAErtq1L0ENiHwOD7K6GXu7glRIRclJVN4tJZ-hBRmDSxW4J6fP_UWsuh31fzzHXw_HiI9VRRsBURMI_i0zC7XNoUwPzOqqDVEkL8ocGh_frphT2UwqpLza9kKhxYIdKh9qfNjjOw_Tt1Br6YI8A1WvVyHy3X25mIOhpVZS0Ce5dRdTGqQd5CyUv379ADy_At7NorGeh_Iy30bBQFhrswbSKg3Y_gGYGJT-xbVHleyvEYzpBJmLbOuUXfNTiXOGjBcBt93qFip_s0OnWld1aBg6u07WDqhXVLR_zSLI9WWY5VcogWsjxy9rSXAxGGgg3rQ9QVFt1D-ew4c_1Q9N4mWu1AIoUdt-DISXB7va_nRsIostZpOMg7DfIfotteHjV2Lwy4siult4o40y75AtfzUi6CXi_4f2dDrQA-S4yq81qOr_pGNwT25BJlM2-XVPQt_VeorsftAYSrIqJ9oBdUZaDzarrC7PED2MAAg11xx-TOfzppdRvpHNQrHHqPCpHtmkj9WV9xmh7FEaQahGv0ma4OMlECYT21lPPAp-3-KTX1QVCsAaGnpzJ7n_Zq2HGtVHlNFBus7u2L8_Dz5UyTt_GWAckvh-rpc5UJ04ODZeGYXMhqRIMKTvALRH3CQRxZbsp5dRgtr9ZiUSTVcxrqdDrT7YqQXE8YXmujVwBmFd4sueEGbpy95w_P7kd8B0KwiAnTF18Y9ceTbGOiUDaiGurEz4YtyJ5B9e7NBox3wvRLC1smUSSqaWHzLKpkDlC06QBGN_0kGm2UVfc8kyjhM_aJYF_ZwNivxnmQ92zBZ3m5gvBI3vDyefh-GdKsq9MG0OPTWVNe89CkwsyyfMescbWfEQfLbKgdYjdKnjxsw_TnFuPql4RhrrNnvcc-oFCUvMjkyfpAs8GYuqx5_xF-J7VARQN2_NXp1LyxCpMh8xmGvV0fv8Dnu1wOXfTXk11EJ8YhBhKC-xhJOSwwGzeoP2FzlFjC9tFV4sqkLT2FMKzoG2XNZGKfPCthlXkAYGQdQ8vidToPONq-DCN8TDOj4yPw_rwh4BK2V4fUhtIC0lmgu7RYpQY6KTWlz_TthmnGP4wcF4KVWmCgZAPEwDHNeRJ4OLNXeRxmgZTM_2wj7o_soHUIMehfQRec3LqFWjWBEd7ll_2N_1oHmFhZwjOdcSKegF0qvsS8JnQ61zOKPdbKNb0X6kCywoLeX-SKi9nmKh-7UVww8aj2fIA950FW8bFEbH8L0yzUEdDRI8zf0BFVD_2cHwg";
+    const FOLDER_PATH = "/AK2z1VISUqQea4V6VbWyAEc";
 
-    styleSwitcher.addEventListener('click', () => {
-      if (isAquaStyle) {
-        document.querySelector('link[rel="stylesheet"]').setAttribute('href', 'style.css');
-        styleSwitcher.textContent = 'Change Style: Vapor / Aqua';
-      } else {
-        document.querySelector('link[rel="stylesheet"]').setAttribute('href', 'aqua.css');
-        styleSwitcher.textContent = 'Change Style: Aqua / Vapor';
+    async function loadLatest() {
+      const res = await fetch("https://api.dropboxapi.com/2/files/list_folder", {
+        method: "POST",
+        headers: {
+          "Authorization": "Bearer " + ACCESS_TOKEN,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ path: FOLDER_PATH })
+      });
+
+      const data = await res.json();
+      if (!data.entries) {
+        document.getElementById("content").innerText = "Keine Bilder gefunden";
+        return;
       }
-      isAquaStyle = !isAquaStyle;
-    });
+
+      const images = data.entries.filter(f => f[".tag"] === "file");
+      images.sort((a, b) => new Date(b.server_modified) - new Date(a.server_modified));
+      const latest = images[0];
+
+      const downloadRes = await fetch("https://content.dropboxapi.com/2/files/download", {
+        method: "POST",
+        headers: {
+          "Authorization": "Bearer " + ACCESS_TOKEN,
+          "Dropbox-API-Arg": JSON.stringify({ path: latest.path_lower })
+        }
+      });
+
+      const blob = await downloadRes.blob();
+      const imgUrl = URL.createObjectURL(blob);
+
+      document.getElementById("content").innerHTML = `
+        <img src="${imgUrl}" alt="">
+        <div class="info">${latest.name} – ${new Date(latest.server_modified).toLocaleString()}</div>
+      `;
+    }
+
+    loadLatest();
   </script>
 </body>
 </html>
