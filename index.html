@@ -1,61 +1,64 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Letztes Bild aus Dropbox</title>
-  <style>
-    body { font-family: sans-serif; text-align: center; margin: 40px; }
-    img { max-width: 90%; margin-top: 20px; border-radius: 8px; }
-    .info { margin-top: 10px; color: #444; font-size: 0.9em; }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Moritz' Landing</title>
+  <link rel="stylesheet" href="aqua.css">
 </head>
 <body>
-  <h1>Letztes Bild</h1>
-  <div id="content">Lädt…</div>
+<div class="main">
+    <div class="background-overlay"></div>
+    
+    <a class="word web" href="https://moritzgauss.com/">web</a>
+    <a class="word creative" href="https://moritzgauss.com/creative">creative</a>
+    <a class="word objects" href="https://moritzgauss.com/objects">objects</a>
+    <a class="word concepts" href="https://moritzgauss.com/concepts">concepts</a>
+    
+    <div class="arrows">
+      <div class="arrow">⟁</div>
+      <div class="arrow delay">▽</div>
+    </div>
+    
+    <a class="corner bottom-left" href="https://moritzgauss.com/about">moritz gauss</a>
+    <a class="corner bottom-right" href="https://moritzgauss.com/studio">studio</a>
+
+    <div class="silhouettes">
+      <!-- SVG Silhouettes: recolored and replaced with external SVGs -->
+      <img class="silhouette person1" src="https://upload.wikimedia.org/wikipedia/commons/8/83/SVG_Human_Silhouette.svg" style="filter: drop-shadow(0 0 12px #6ec1e4) blur(1.5px) opacity(0.18);" alt="Human silhouette" />
+      <img class="silhouette person2" src="https://upload.wikimedia.org/wikipedia/commons/8/8d/Woman_Silhouette.svg" style="filter: drop-shadow(0 0 12px #e46e9b) blur(1.5px) opacity(0.18);" alt="Woman silhouette" />
+    </div>
+
+    <div class="shooting-stars">
+      <div class="shooting-star star1" alt="Curved Arrow">⚛</div>
+            <div class="shooting-star star1" alt="Curved Arrow">✎</div>
+      <div class="shooting-star star2 alt="Curved Arrow">✍</div>
+            <div class="shooting-star star2 alt="Curved Arrow">☎</div>
+      <div class="shooting-star star3" alt="Curved Arrow">☠</div>
+            <div class="shooting-star star3" alt="Curved Arrow">✉</div>
+      <div class="shooting-star star4" alt="Curved Arrow">♬</div>
+            <div class="shooting-star star4" alt="Curved Arrow">✆</div>
+    </div>
+  </div>
+
+  <button id="style-switcher" style="position:fixed;top:1em;right:1em;z-index:1000;font-size:1em;color:#888;opacity:0.5;">
+    Change Style: Aqua / Vapor
+  </button>
 
   <script>
-    // Dein öffentlicher Dropbox-Ordner-Link (sollte auf /s/ beginnen)
-    const SHARED_FOLDER_URL = "https://www.dropbox.com/scl/fo/icpkdzmyrbwonrlupe0gg/mori77z?rlkey=57j0gxwyhajqe4ipc0gmkzcd2&dl=0";
+    const styleSwitcher = document.getElementById('style-switcher');
+    let isAquaStyle = true;
 
-    async function loadLatest() {
-      try {
-        // 1. HTML vom Freigabe-Link laden
-        const res = await fetch(SHARED_FOLDER_URL);
-        const text = await res.text();
-
-        // 2. Alle Bild-Links finden (jpg, jpeg, png, gif)
-        const regex = /https:\/\/www\.dropbox\.com\/s\/[^"]+\.(jpg|jpeg|png|gif)\?dl=0/g;
-        const matches = text.match(regex);
-
-        if (!matches || matches.length === 0) {
-          document.getElementById("content").innerText = "Keine Bilder gefunden.";
-          return;
-        }
-
-        // 3. In RAW-Links umwandeln (?raw=1)
-        const rawLinks = matches.map(link => link.replace("?dl=0", "?raw=1"));
-
-        // 4. Nach Zahl im Dateinamen sortieren (höchste Zahl = neuestes Bild)
-        rawLinks.sort((a, b) => {
-          const numA = parseInt(a.match(/(\d+)(?=\.\w+\?raw=1)/)?.[0] || "0", 10);
-          const numB = parseInt(b.match(/(\d+)(?=\.\w+\?raw=1)/)?.[0] || "0", 10);
-          return numA - numB; // klein → groß
-        });
-
-        const latest = rawLinks[rawLinks.length - 1];
-        const filename = latest.split("/").pop().split("?")[0];
-
-        // 5. Anzeige
-        document.getElementById("content").innerHTML = `
-          <img src="${latest}" alt="">
-          <div class="info">${filename}</div>
-        `;
-      } catch (e) {
-        document.getElementById("content").innerText = "Fehler beim Laden: " + e;
+    styleSwitcher.addEventListener('click', () => {
+      if (isAquaStyle) {
+        document.querySelector('link[rel="stylesheet"]').setAttribute('href', 'style.css');
+        styleSwitcher.textContent = 'Change Style: Vapor / Aqua';
+      } else {
+        document.querySelector('link[rel="stylesheet"]').setAttribute('href', 'aqua.css');
+        styleSwitcher.textContent = 'Change Style: Aqua / Vapor';
       }
-    }
-
-    loadLatest();
+      isAquaStyle = !isAquaStyle;
+    });
   </script>
 </body>
 </html>
