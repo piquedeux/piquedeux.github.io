@@ -57,68 +57,99 @@ color: black;
   </div>
 
   <script> 
-async function fetchAllApps() {
-    if (!subfolder) return;
-    subfolder.innerHTML = "<li>Lade Archive...</li>";
+document.addEventListener("DOMContentLoaded", () => {
+    const repoSuffix = ".app";
+    const githubUser = "piquedeux";
+    const subfolder = document.querySelector(".subfolder");
+    
+    // Pfad zur PHP-Datei im Unterordner
+    const phpUrl = "https://piquedeux.de/projects/apps/list_apps.php";
 
-    const githubUrl = `https://api.github.com/users/${githubUser}/repos?sort=created&per_page=100`;
-    const phpUrl = "https://piquedeux.de/projects/apps/list_apps.php"; // Deine neue PHP-Quelle
+    // 1. Ordner-Logik (Öffnen/Schließen)
+    document.addEventListener("click", (e) => {
+        if (e.target.classList.contains("folder-icon")) {
+            const parentLi = e.target.closest("li");
+            const targetUl = parentLi.querySelector("ul");
+            if (targetUl) {
+                const isOpen = parentLi.classList.toggle("open");
+                targetUl.style.display = isOpen ? "block" : "none";
+                e.target.textContent = isOpen 
+                    ? e.target.textContent.replace("📁", "📂") 
+                    : e.target.textContent.replace("📂", "📁");
+            }
+        }
+    });
 
-    try {
-        // Beide Anfragen parallel starten
-        const [ghResponse, phpResponse] = await Promise.allSettled([
-            fetch(githubUrl),
-            fetch(phpUrl)
-        ]);
+    // 2. Daten laden
+    async function fetchAllApps() {
+        if (!subfolder) return;
+        subfolder.innerHTML = "<li>Lade Archive...</li>";
 
-        let allApps = [];
+        const githubApiUrl = `https://api.github.com/users/${githubUser}/repos?sort=created&per_page=100`;
 
-        // 1. GitHub Daten verarbeiten
-        if (ghResponse.status === "fulfilled" && ghResponse.value.ok) {
-            const repos = await ghResponse.value.json();
-            const ghMapped = repos
-                .filter(repo => !repo.private && repo.name.toLowerCase().endsWith(repoSuffix))
-                .map(repo => ({
-                    name: repo.name,
-                    url: `https://${githubUser}.github.io/${repo.name}/`,
-                    date: new Date(repo.created_at)
+        try {
+            const [ghResponse, phpResponse] = await Promise.allSettled([
+                fetch(githubApiUrl),
+                fetch(phpUrl)
+            ]);
+
+            let allApps = [];
+
+            // GitHub
+            if (ghResponse.status === "fulfilled" && ghResponse.value.ok) {
+                const repos = await ghResponse.value.json();
+                const ghMapped = repos
+                    .filter(repo => !repo.private && repo.name.toLowerCase().endsWith(repoSuffix))
+                    .map(repo => ({
+                        name: repo.name,
+                        url: `https://${githubUser}.github.io/${repo.name}/`,
+                        date: new Date(repo.created_at)
+                    }));
+                allApps = [...allApps, ...ghMapped];
+            }
+
+            // PHP (Lokaler Server)
+            if (phpResponse.status === "fulfilled" && phpResponse.value.ok) {
+                const localFolders = await phpResponse.value.json();
+                const localMapped = localFolders.map(f => ({
+                    name: f.name,
+                    // Da die PHP im selben Ordner liegt, ist der Pfad zu den Apps identisch
+                    url: `https://piquedeux.de/projects/apps/${f.name}/`,
+                    date: new Date(f.date)
                 }));
-            allApps = [...allApps, ...ghMapped];
+                allApps = [...allApps, ...localMapped];
+            }
+
+            // Sortieren & Rendern
+            allApps.sort((a, b) => b.date - a.date);
+            subfolder.innerHTML = ""; 
+
+            if (allApps.length === 0) {
+                subfolder.innerHTML = "<li>Keine Projekte gefunden.</li>";
+                return;
+            }
+
+            allApps.forEach(app => {
+                const month = String(app.date.getMonth() + 1).padStart(2, "0");
+                const year = app.date.getFullYear();
+                const li = document.createElement("li");
+                li.innerHTML = `
+                    <span class="folder-icon" style="cursor:pointer">📁</span>
+                    <a href="${app.url}" target="_blank" rel="noopener">${app.name}</a>
+                    <span class="description" style="color:#888; font-size:0.85em; margin-left:8px;">(${month}/${year})</span>
+                `;
+                subfolder.appendChild(li);
+            });
+
+        } catch (error) {
+            console.error("Fehler:", error);
+            subfolder.innerHTML = "<li>Daten konnten nicht geladen werden.</li>";
         }
-
-        // 2. PHP Daten (Lokale Server-Ordner) verarbeiten
-        if (phpResponse.status === "fulfilled" && phpResponse.value.ok) {
-            const localFolders = await phpResponse.value.json();
-            const localMapped = localFolders.map(f => ({
-                name: f.name,
-                url: `https://piquedeux.de/projects/apps/${f.name}/`,
-                date: new Date(f.date)
-            }));
-            allApps = [...allApps, ...localMapped];
-        }
-
-        // 3. Alles zusammenführen und sortieren
-        allApps.sort((a, b) => b.date - a.date);
-
-        // 4. Anzeige rendern
-        subfolder.innerHTML = ""; 
-        allApps.forEach(app => {
-            const month = String(app.date.getMonth() + 1).padStart(2, "0");
-            const year = app.date.getFullYear();
-            const li = document.createElement("li");
-            li.innerHTML = `
-                <span class="folder-icon" style="cursor:pointer">📁</span>
-                <a href="${app.url}" target="_blank" rel="noopener">${app.name}</a>
-                <span class="description" style="color:#888; font-size:0.85em; margin-left:8px;">(${month}/${year})</span>
-            `;
-            subfolder.appendChild(li);
-        });
-
-    } catch (error) {
-        console.error("Fehler beim Laden:", error);
-        subfolder.innerHTML = "<li>Fehler beim Laden der Daten.</li>";
     }
-}
+
+    fetchAllApps();
+});
+
 
 
   </script>
