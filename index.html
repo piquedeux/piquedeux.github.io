@@ -57,89 +57,69 @@ color: black;
   </div>
 
   <script> 
-document.addEventListener("DOMContentLoaded", () => {
-  const repoSuffix = ".app";
-  const githubUser = "piquedeux";
-  const subfolder = document.querySelector(".subfolder");
-
-  // 1. Ordner-Logik (Öffnen/Schließen) via Event Delegation
-  document.addEventListener("click", (e) => {
-    // Prüfen, ob auf ein Ordner-Icon geklickt wurde
-    if (e.target.classList.contains("folder-icon")) {
-      const parentLi = e.target.closest("li");
-      const targetUl = parentLi.querySelector("ul");
-
-      if (targetUl) {
-        const isOpen = parentLi.classList.toggle("open");
-        targetUl.style.display = isOpen ? "block" : "none";
-
-        // Icon wechseln (📁 zu 📂 und zurück)
-        if (isOpen) {
-          e.target.textContent = e.target.textContent.replace("📁", "📂");
-        } else {
-          e.target.textContent = e.target.textContent.replace("📂", "📁");
-        }
-      }
-    }
-  });
-
-  // 2. Repositories von GitHub laden
-  async function fetchRepos() {
+async function fetchAllApps() {
     if (!subfolder) return;
-    
-    // Kleiner Lade-Indikator
     subfolder.innerHTML = "<li>Lade Archive...</li>";
 
+    const githubUrl = `https://api.github.com/users/${githubUser}/repos?sort=created&per_page=100`;
+    const phpUrl = "https://piquedeux.de/projects/apps/list_apps.php"; // Deine neue PHP-Quelle
+
     try {
-      const response = await fetch(`https://api.github.com/users/${githubUser}/repos?sort=created&per_page=100`);
-      if (!response.ok) throw new Error("Fehler beim Abrufen der Daten");
+        // Beide Anfragen parallel starten
+        const [ghResponse, phpResponse] = await Promise.allSettled([
+            fetch(githubUrl),
+            fetch(phpUrl)
+        ]);
 
-      const repos = await response.json();
+        let allApps = [];
 
-      // Filtern: Nur Repos, die auf .app enden und öffentlich sind
-      const filtered = repos
-        .filter(repo => 
-          !repo.private && 
-          repo.name.toLowerCase().endsWith(repoSuffix.toLowerCase())
-        )
-        // Sortierung: Neueste zuerst
-        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        // 1. GitHub Daten verarbeiten
+        if (ghResponse.status === "fulfilled" && ghResponse.value.ok) {
+            const repos = await ghResponse.value.json();
+            const ghMapped = repos
+                .filter(repo => !repo.private && repo.name.toLowerCase().endsWith(repoSuffix))
+                .map(repo => ({
+                    name: repo.name,
+                    url: `https://${githubUser}.github.io/${repo.name}/`,
+                    date: new Date(repo.created_at)
+                }));
+            allApps = [...allApps, ...ghMapped];
+        }
 
-      subfolder.innerHTML = ""; // Lade-Text entfernen
+        // 2. PHP Daten (Lokale Server-Ordner) verarbeiten
+        if (phpResponse.status === "fulfilled" && phpResponse.value.ok) {
+            const localFolders = await phpResponse.value.json();
+            const localMapped = localFolders.map(f => ({
+                name: f.name,
+                url: `https://piquedeux.de/projects/apps/${f.name}/`,
+                date: new Date(f.date)
+            }));
+            allApps = [...allApps, ...localMapped];
+        }
 
-      if (filtered.length === 0) {
-        subfolder.innerHTML = "<li>Keine passenden Repositories gefunden.</li>";
-        return;
-      }
+        // 3. Alles zusammenführen und sortieren
+        allApps.sort((a, b) => b.date - a.date);
 
-      filtered.forEach(repo => {
-        const createdAt = new Date(repo.created_at);
-        const month = String(createdAt.getMonth() + 1).padStart(2, "0");
-        const year = createdAt.getFullYear();
-        
-        // Link zu: https://piquedeux.github.io/repo-name/
-        const githubPagesUrl = `https://${githubUser}.github.io/${repo.name}/`;
-
-        const li = document.createElement("li");
-        li.className = "repo-item";
-        li.innerHTML = `
-          <span class="folder-icon" style="cursor:pointer">📁</span>
-          <a href="${githubPagesUrl}" target="_blank" rel="noopener">${repo.name}</a>
-          <span class="description" style="color: #888; font-size: 0.85em; margin-left: 8px;">
-            (${month}/${year})
-          </span>
-        `;
-        subfolder.appendChild(li);
-      });
+        // 4. Anzeige rendern
+        subfolder.innerHTML = ""; 
+        allApps.forEach(app => {
+            const month = String(app.date.getMonth() + 1).padStart(2, "0");
+            const year = app.date.getFullYear();
+            const li = document.createElement("li");
+            li.innerHTML = `
+                <span class="folder-icon" style="cursor:pointer">📁</span>
+                <a href="${app.url}" target="_blank" rel="noopener">${app.name}</a>
+                <span class="description" style="color:#888; font-size:0.85em; margin-left:8px;">(${month}/${year})</span>
+            `;
+            subfolder.appendChild(li);
+        });
 
     } catch (error) {
-      console.error("GitHub API Fehler:", error);
-      subfolder.innerHTML = "<li>Fehler beim Laden der Repositories.</li>";
+        console.error("Fehler beim Laden:", error);
+        subfolder.innerHTML = "<li>Fehler beim Laden der Daten.</li>";
     }
-  }
+}
 
-  fetchRepos();
-});
 
   </script>
 </body>
