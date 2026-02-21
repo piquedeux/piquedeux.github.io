@@ -40,10 +40,10 @@ color: black;
 </head>
 <body>
   <div id="container">
-    <header>
+    <div>
       <h1>♠♠ App Archive</h1>
-      <h2>by <a href="https://moritzgauss.com">Moritz Gauss</a></h2>
-    </header>
+      <h2>by <a href="https://moritzgauss.com" target="_blank" rel="noopener">Moritz Gauss</a></h2>
+    </div>
     <main>
       <ul class="folder">
         <li class="folder-item">
@@ -58,82 +58,87 @@ color: black;
 
   <script> 
 document.addEventListener("DOMContentLoaded", () => {
-    const repoSuffix = ".app";
-    const subfolder = document.querySelector(".subfolder");
-    const githubUser = "piquedeux"; 
+  const repoSuffix = ".app";
+  const githubUser = "piquedeux";
+  const subfolder = document.querySelector(".subfolder");
 
+  // 1. Ordner-Logik (Öffnen/Schließen) via Event Delegation
+  document.addEventListener("click", (e) => {
+    // Prüfen, ob auf ein Ordner-Icon geklickt wurde
+    if (e.target.classList.contains("folder-icon")) {
+      const parentLi = e.target.closest("li");
+      const targetUl = parentLi.querySelector("ul");
 
-    document.addEventListener("click", (e) => {
-        if (e.target.classList.contains("folder-icon")) {
-            const parent = e.target.closest("li");
-            if (!parent) return;
+      if (targetUl) {
+        const isOpen = parentLi.classList.toggle("open");
+        targetUl.style.display = isOpen ? "block" : "none";
 
-            const targetSubfolder = parent.querySelector("ul");
-            if (targetSubfolder) {
-                const isOpen = parent.classList.toggle("open");
-                targetSubfolder.style.display = isOpen ? "block" : "none";
-                
-
-                const iconText = e.target.textContent;
-                if (isOpen) {
-                    e.target.textContent = iconText.replace("📁", "📂");
-                } else {
-                    e.target.textContent = iconText.replace("📂", "📁");
-                }
-            }
+        // Icon wechseln (📁 zu 📂 und zurück)
+        if (isOpen) {
+          e.target.textContent = e.target.textContent.replace("📁", "📂");
+        } else {
+          e.target.textContent = e.target.textContent.replace("📂", "📁");
         }
-    });
-
-    async function fetchRepos() {
-        if (!subfolder) return;
-        subfolder.innerHTML = "<li>Lade Archive...</li>";
-
-        try {
-            const response = await fetch(`https://api.github.com/users/${githubUser}/repos?sort=created`);
-            if (!response.ok) throw new Error("API-Limit erreicht oder User nicht gefunden");
-
-            const repos = await response.json();
-
-
-            const filtered = repos
-                .filter(repo => 
-                    !repo.private && 
-                    repo.name.toLowerCase().endsWith(repoSuffix.toLowerCase())
-                )
-                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-
-            subfolder.innerHTML = ""; // Loader entfernen
-
-            if (filtered.length === 0) {
-                subfolder.innerHTML = "<li>Keine .app Repositories gefunden.</li>";
-                return;
-            }
-
-            filtered.forEach(repo => {
-                const createdAt = new Date(repo.created_at);
-                const month = String(createdAt.getMonth() + 1).padStart(2, "0");
-                const year = createdAt.getFullYear();
-                
-
-                const githubPagesUrl = `https://${githubUser}.github.io/${repo.name}/`;
-
-                const li = document.createElement("li");
-                li.innerHTML = `
-                    <span class="folder-icon" style="cursor:pointer">📁</span>
-                    <a href="${githubPagesUrl}" target="_blank">${repo.name}</a>
-                    <span class="description" style="color: #888; font-size: 0.85em; margin-left: 8px;">
-                        (${month}/${year})
-                    </span>
-                `;
-                subfolder.appendChild(li);
-            });
-        } catch (error) {
-            console.error("Fehler:", error);
-            subfolder.innerHTML = "<li>Fehler beim Laden der Repos von GitHub.</li>";
-        }
+      }
     }
+  });
 
-    fetchRepos();
+  // 2. Repositories von GitHub laden
+  async function fetchRepos() {
+    if (!subfolder) return;
+    
+    // Kleiner Lade-Indikator
+    subfolder.innerHTML = "<li>Lade Archive...</li>";
+
+    try {
+      const response = await fetch(`https://api.github.com/users/${githubUser}/repos?sort=created&per_page=100`);
+      if (!response.ok) throw new Error("Fehler beim Abrufen der Daten");
+
+      const repos = await response.json();
+
+      // Filtern: Nur Repos, die auf .app enden und öffentlich sind
+      const filtered = repos
+        .filter(repo => 
+          !repo.private && 
+          repo.name.toLowerCase().endsWith(repoSuffix.toLowerCase())
+        )
+        // Sortierung: Neueste zuerst
+        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+      subfolder.innerHTML = ""; // Lade-Text entfernen
+
+      if (filtered.length === 0) {
+        subfolder.innerHTML = "<li>Keine passenden Repositories gefunden.</li>";
+        return;
+      }
+
+      filtered.forEach(repo => {
+        const createdAt = new Date(repo.created_at);
+        const month = String(createdAt.getMonth() + 1).padStart(2, "0");
+        const year = createdAt.getFullYear();
+        
+        // Link zu: https://piquedeux.github.io/repo-name/
+        const githubPagesUrl = `https://${githubUser}.github.io/${repo.name}/`;
+
+        const li = document.createElement("li");
+        li.className = "repo-item";
+        li.innerHTML = `
+          <span class="folder-icon" style="cursor:pointer">📁</span>
+          <a href="${githubPagesUrl}" target="_blank" rel="noopener">${repo.name}</a>
+          <span class="description" style="color: #888; font-size: 0.85em; margin-left: 8px;">
+            (${month}/${year})
+          </span>
+        `;
+        subfolder.appendChild(li);
+      });
+
+    } catch (error) {
+      console.error("GitHub API Fehler:", error);
+      subfolder.innerHTML = "<li>Fehler beim Laden der Repositories.</li>";
+    }
+  }
+
+  fetchRepos();
 });
 
   </script>
