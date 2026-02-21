@@ -4,7 +4,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>App Archive by Moritz</title>
-<link rel="stylesheet" href="styles.css"/>
+
+<style>
+.subfolder {
+    display: none; /* Standardmäßig zu */
+    list-style: none;
+    padding-left: 20px;
+}
+
+.folder-item.open > .subfolder {
+    display: block; /* Zeigen wenn 'open' Klasse da ist */
+}
+
+.folder-icon {
+    cursor: pointer;
+    user-select: none;
+}
+
+.description {
+    font-size: 0.8em;
+    color: #666;
+    margin-left: 10px;
+}
+</style>
+
 </head>
 <body>
   <div id="container">
