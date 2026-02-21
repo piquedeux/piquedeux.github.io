@@ -89,7 +89,7 @@ color: black;
                 const localFolders = await phpResponse.value.json();
                 const localMapped = localFolders.map(f => ({
                     name: f.name, // Keine Namensbeschränkung
-                    url: `https://piquedeux.de/projects/apps/${f.name}/`,
+                    url: `https://piquedeux.de/apps/${f.name}/`,
                     date: new Date(f.date)
                 }));
                 allApps = [...allApps, ...localMapped];
