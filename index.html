@@ -57,30 +57,6 @@ color: black;
   </div>
 
   <script> 
-document.addEventListener("DOMContentLoaded", () => {
-    const repoSuffix = ".app";
-    const githubUser = "piquedeux";
-    const subfolder = document.querySelector(".subfolder");
-    
-    // Pfad zur PHP-Datei im Unterordner
-    const phpUrl = "https://piquedeux.de/projects/apps/list_apps.php";
-
-    // 1. Ordner-Logik (Öffnen/Schließen)
-    document.addEventListener("click", (e) => {
-        if (e.target.classList.contains("folder-icon")) {
-            const parentLi = e.target.closest("li");
-            const targetUl = parentLi.querySelector("ul");
-            if (targetUl) {
-                const isOpen = parentLi.classList.toggle("open");
-                targetUl.style.display = isOpen ? "block" : "none";
-                e.target.textContent = isOpen 
-                    ? e.target.textContent.replace("📁", "📂") 
-                    : e.target.textContent.replace("📂", "📁");
-            }
-        }
-    });
-
-    // 2. Daten laden
     async function fetchAllApps() {
         if (!subfolder) return;
         subfolder.innerHTML = "<li>Lade Archive...</li>";
@@ -95,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             let allApps = [];
 
-            // GitHub
+            // 1. GITHUB: Hier filtern wir STRENG nach .app
             if (ghResponse.status === "fulfilled" && ghResponse.value.ok) {
                 const repos = await ghResponse.value.json();
                 const ghMapped = repos
@@ -108,19 +84,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 allApps = [...allApps, ...ghMapped];
             }
 
-            // PHP (Lokaler Server)
+            // 2. LOKAL (PHP): Hier laden wir EINFACH ALLES, was das Skript findet
             if (phpResponse.status === "fulfilled" && phpResponse.value.ok) {
                 const localFolders = await phpResponse.value.json();
                 const localMapped = localFolders.map(f => ({
-                    name: f.name,
-                    // Da die PHP im selben Ordner liegt, ist der Pfad zu den Apps identisch
+                    name: f.name, // Keine Namensbeschränkung
                     url: `https://piquedeux.de/projects/apps/${f.name}/`,
                     date: new Date(f.date)
                 }));
                 allApps = [...allApps, ...localMapped];
             }
 
-            // Sortieren & Rendern
+            // --- Sortieren & Rendern ---
             allApps.sort((a, b) => b.date - a.date);
             subfolder.innerHTML = ""; 
 
@@ -146,11 +121,6 @@ document.addEventListener("DOMContentLoaded", () => {
             subfolder.innerHTML = "<li>Daten konnten nicht geladen werden.</li>";
         }
     }
-
-    fetchAllApps();
-});
-
-
 
   </script>
 </body>
